@@ -141,7 +141,12 @@ public class VibrationPluginSwift: NSObject, FlutterPlugin {
             }
             
             if pattern.count == 0 {
-                AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                if #available(iOS 10.0, *) {
+                    let feedBack:UIImpactFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+                    feedBack.impactOccurred()
+                } else {
+                    AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                }
                 result(true)
                 return
             }
